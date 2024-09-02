@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Services - Active Bootstrap Template</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/assets/img/favicon.png" rel="icon">
+  <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="/assets/css/main.css" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: Active
+  * Template URL: https://bootstrapmade.com/active-bootstrap-website-template/
+  * Updated: Jun 29 2024 with Bootstrap v5.3.3
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body class="services-page">
+
+<div layout:fragment="content">
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title light-background">
+      <div class="container">
+        <h1>Services</h1>
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a th:href="@{/}">메인</a></li>
+            <li class="current">Services</li>
+          </ol>
+        </nav>
+      </div>
+    </div><!-- End Page Title -->
+
+    <!-- Services 2 Section -->
+    <section id="services-2" class="services-2 section">
+
+      <div class="container">
+        <div class="row justify-content-center" data-aos="fade-up">
+          <div class="col-md-8 col-lg-6">
+            <h1 class="mb-3">게시글 수정</h1>
+            <form th:action="@{/board/edit}" method="post">
+              <input type="hidden" name="id" th:value="${boardDTO.id}">
+              <div class="mb-3">
+                <label for="title" class="form-label">제목</label>
+                <input type="text" class="form-control" id="title" name="title" th:value="${boardDTO.title}" required>
+              </div>
+              <div class="mb-3">
+                <label for="content" class="form-label">내용</label>
+                <textarea class="form-control" id="content" name="content" rows="10" required th:text="${boardDTO.content}"></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="boardImg" class="form-label">이미지</label>
+                <input class="form-control" type="file" id="boardImg" name="file">
+                <img th:src="@{'/images/img/'+${boardDTO.boardImg}}" alt="Current Book Image" class="mt-2" style="width: 300px; height: 411px;" th:if="${boardDTO.boardImg != null}">
+              </div>
+              <button type="submit" class="btn btn-primary">수정</button>
+              <a th:href="@{/board/list}" class="btn btn-secondary">취소</a>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section><!-- /Services 2 Section -->
+
+
+
+  </main>
+</div>
+
+</body>
+
+</html>

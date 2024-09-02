@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/main}">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Services - Active Bootstrap Template</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/assets/img/favicon.png" rel="icon">
+  <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="/assets/css/main.css" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: Active
+  * Template URL: https://bootstrapmade.com/active-bootstrap-website-template/
+  * Updated: Jun 29 2024 with Bootstrap v5.3.3
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body class="services-page">
+
+<div layout:fragment="content">
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title light-background">
+      <div class="container">
+        <h1>Services</h1>
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a th:href="@{/}">메인</a></li>
+            <li class="current">Services</li>
+          </ol>
+        </nav>
+      </div>
+    </div><!-- End Page Title -->
+
+    <!-- Services 2 Section -->
+    <section id="services-2" class="services-2 section">
+
+      <div class="container">
+        <div class="row justify-content-center" data-aos="fade-up">
+          <div class="col-md-6 col-lg-4">
+            <div class="card">
+              <div class="card-header">
+                <h2 th:text="${boardDTO.title}">제목</h2>
+              </div>
+              <div class="card-body">
+                <p class="card-text" th:text="${boardDTO.content}">내용</p>
+                <p class="card-text" th:text="${boardDTO.author}">작성자</p>
+              </div>
+              <div class="card-footer text-muted">
+                <div class="d-flex justify-content-between">
+                  <div>
+                    <p th:text="${#temporals.format(boardDTO.modDate, 'yyyy-MM-dd HH:mm')}">2024-01-01 12:00</p>
+                  </div>
+                  <div>
+                    <a th:if="${#authentication != null and #authentication.name == boardDTO.author}" th:href="@{/board/delete(id=${boardDTO.id})}" class="btn btn-info">수정</a>
+                    <a th:if="${#authentication != null and #authentication.name == boardDTO.author}" th:href="@{/board/delete(id=${boardDTO.id})}" class="btn btn-danger">삭제</a>
+                    <p>추천수: <span id="likeCount" th:text="${boardDTO.likeCount}"></span></p>
+                    <a class="btn btn-primary" th:href="@{/board/like(id=${boardDTO.id})}" th:text="${hasLiked ? '추천' : '추천'}"></a>
+                    <a th:href="@{/board/list}" class="btn btn-secondary">목록</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card mt-3">
+              <div class="card-body">
+                <form th:action="@{/comment/insert}" method="post">
+                  <input type="hidden" name="no" th:value="${boardDTO.id}">
+                  <div class="mb-3 mt-3">
+                    <label for="body" class="form-label">댓글:</label>
+                    <input type="text" class="form-control" id="body"
+                           placeholder="댓글을 입력하세요" name="body">
+                  </div>
+                  <button type="submit" class="btn btn-primary">댓글등록</button>
+                </form>
+              </div>
+            </div>
+            <!--댓글목록(카드방식-목록)-->
+            <!--model.addAttribute("data", articleDTO); //게시글
+               model.addAttribute("list", commentDTOS); //해당하는 댓글들-->
+            <div class="card mt-3" th:each="temp:${list}">
+              <div class="card-body">
+                <p><span th:text="${temp.body}">내용</span></p>
+                <!--@GetMapping("/command/remove")
+                    public String remove(Integer no(게시글번호), Integer id(댓글번호)) {-->
+                <a th:href="@{/comment/remove(no=${boardDTO.id}, id=${temp.id})}">삭제</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section><!-- /Services 2 Section -->
+
+
+
+  </main>
+</div>
+
+</body>
+
+</html>

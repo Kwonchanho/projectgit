@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/main}">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>게시판 목록</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/assets/img/favicon.png" rel="icon">
+  <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="/assets/css/main.css" rel="stylesheet">
+</head>
+
+<body class="services-page">
+
+<div layout:fragment="content">
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title light-background">
+      <div class="container">
+        <h1>게시판</h1>
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a th:href="@{/}">메인</a></li>
+            <li class="current">게시판</li>
+          </ol>
+        </nav>
+      </div>
+    </div><!-- End Page Title -->
+
+    <!-- Services 2 Section -->
+    <section id="services-2" class="services-2 section">
+
+      <div class="container">
+        <div class="row justify-content-center" data-aos="fade-up">
+          <div class="col-md-8 col-lg-8">
+<!--            <form action="#" th:action="@{/board/list}" method="get">-->
+<!--            <label for="searchType"></label>-->
+<!--            <select id="searchType" name="searchType">-->
+<!--                <option value="title" th:selected="${searchType == 'title'}">제목</option>-->
+<!--                <option value="content" th:selected="${searchType == 'content'}">내용</option>-->
+<!--                <option value="titleContent" th:selected="${searchType == 'titleContent'}">제목 + 내용</option>-->
+<!--            </select>-->
+
+<!--            <label for="searchKeyword">검색어:</label>-->
+<!--            <input type="text" id="searchKeyword" name="searchKeyword" th:value="${searchKeyword}"/>-->
+
+<!--            <label for="category">카테고리:</label>-->
+<!--            <select id="category" name="category">-->
+<!--                <option value="" th:selected="${category == ''}">전체</option>-->
+<!--                <option value="자유게시판" th:selected="${category == '자유게시판'}">자유게시판</option>-->
+<!--                <option value="정보게시판" th:selected="${category == '정보게시판'}">정보게시판</option>-->
+<!--                <option value="질문게시판" th:selected="${category == '질문게시판'}">질문게시판</option>-->
+<!--                <option value="건의게시판" th:selected="${category == '건의게시판'}">건의게시판</option>-->
+<!--            </select>-->
+
+<!--            <button type="submit">검색</button>-->
+<!--        </form>-->
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h1 class="text-center w-80">전체게시판</h1>
+              <a sec:authorize="isAuthenticated()" class="btn btn-primary btn-sm" th:href="@{/board/new}">게시글등록</a>
+            </div>
+            <div class="mb-3">
+                <a class="btn btn-outline-secondary" th:classappend="${category == ''} ? 'active'" th:href="@{/board/list(category='')}">전체</a>
+                <a class="btn btn-outline-secondary" th:classappend="${category == '자유게시판'} ? 'active'" th:href="@{/board/list(category='자유게시판')}">자유게시판</a>
+                <a class="btn btn-outline-secondary" th:classappend="${category == '정보게시판'} ? 'active'" th:href="@{/board/list(category='정보게시판')}">정보게시판</a>
+                <a class="btn btn-outline-secondary" th:classappend="${category == '질문게시판'} ? 'active'" th:href="@{/board/list(category='질문게시판')}">질문게시판</a>
+                <a class="btn btn-outline-secondary" th:classappend="${category == '건의게시판'} ? 'active'" th:href="@{/board/list(category='건의게시판')}">건의게시판</a>
+            </div>
+            <table class="table table-hover">
+              <thead>
+              <tr>
+                <th>카테고리</th>
+                <th>작성자</th>
+                <th style="width: 40%;">제목</th>
+                <th style="width: 10%">등록일</th>
+                <th>추천수</th>
+                <th>조회수</th>
+              </tr>
+              </thead>
+              <tbody th:each="board : ${boardDTOS.content}" >
+                <tr>
+                  <th class="text" th:text="${board.category}"></th>
+                  <th class="text" th:text="${board.author}"></th>
+                  <th class="text">
+                    <a th:href="@{/board/view(id=${board.id})}">
+                      <span th:if="${board.boardImg != null and board.boardImg.length() > 0}">
+                        <i class="bi bi-file-image"></i>
+                      </span>
+                      <span th:text="${board.title}"></span>
+                    </a>
+                  </th>
+                  <th class="text" th:text="${#temporals.format(board.regDate,'MM-dd')}"></th>
+                  <th class="text" th:text="${board.likeCount}"></th>
+                  <th class="text" th:text="${board.viewCount}"></th>
+                </tr>
+              </tbody>
+            </table>
+            <form action="#" th:action="@{/board/list}" method="get">
+            <label for="searchType"></label>
+            <select id="searchType" name="searchType">
+                <option value="title" th:selected="${searchType == 'title'}">제목</option>
+                <option value="content" th:selected="${searchType == 'content'}">내용</option>
+                <option value="titleContent" th:selected="${searchType == 'titleContent'}">제목 + 내용</option>
+            </select>
+
+            <label for="searchKeyword">검색어:</label>
+            <input type="text" id="searchKeyword" name="searchKeyword" th:value="${searchKeyword}"/>
+
+            <label for="category">카테고리:</label>
+            <select id="category" name="category">
+                <option value="" th:selected="${category == ''}">전체</option>
+                <option value="자유게시판" th:selected="${category == '자유게시판'}">자유게시판</option>
+                <option value="정보게시판" th:selected="${category == '정보게시판'}">정보게시판</option>
+                <option value="질문게시판" th:selected="${category == '질문게시판'}">질문게시판</option>
+                <option value="건의게시판" th:selected="${category == '건의게시판'}">건의게시판</option>
+            </select>
+
+            <button type="submit">검색</button>
+        </form>
+            <nav>
+              <ul class="pagination pagination-sm">
+                <li class="page-item" th:unless="${pageInfo.currentPage == 1}">
+                  <a class="page-link" th:href="@{/board/list(searchType=${searchType}, searchKeyword=${searchKeyword}, page=${pageInfo.prevPage - 1}, category=${category})}">이전</a>
+                </li>
+                <li class="page-item" th:each="i : ${#numbers.sequence(pageInfo.startPage, pageInfo.endPage)}"
+                    th:classappend="${pageInfo.currentPage == i} ? 'active':''">
+                  <a class="page-link" th:href="@{/board/list(searchType=${searchType}, searchKeyword=${searchKeyword}, page=${i - 1}, category=${category})}" th:text="${i}"></a>
+                </li>
+                <li class="page-item" th:unless="${pageInfo.currentPage >= pageInfo.endPage}">
+                  <a class="page-link" th:href="@{/board/list(searchType=${searchType}, searchKeyword=${searchKeyword}, page=${pageInfo.nextPage - 1}, category=${category})}">다음</a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </section><!-- /Services 2 Section -->
+
+  </main>
+</div>
+</body>
+
+</html>
