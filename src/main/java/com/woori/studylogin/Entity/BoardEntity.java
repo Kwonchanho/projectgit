@@ -3,7 +3,7 @@ package com.woori.studylogin.Entity;
 import com.woori.studylogin.Constant.CategoryType;
 import jakarta.persistence.*;
 import lombok.*;
-
+//djdjdj
 @Getter
 @Setter
 @AllArgsConstructor
